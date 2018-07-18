@@ -1,0 +1,22 @@
+variables:
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - test
+
+run_tests:
+  stage: test
+  image: node:10-alpine
+  services:
+    - mongo:latest
+  variables:
+    MONGO_URI: "mongodb://mongo/her_story_told"
+    SECRET: "thisismyappsecret"
+    DEBUG: "true"
+    TEST: "true"
+  tags:
+    - docker
+  script:
+    - npm ci
+    - npx tsc
+    - npm test
