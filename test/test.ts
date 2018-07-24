@@ -1,12 +1,11 @@
 import {expect} from 'chai'
 import {describe} from 'mocha'
 import {App} from "../web/server"
-import Axios, {AxiosError, AxiosResponse} from 'axios'
+import Axios, {AxiosResponse} from 'axios'
 import {Server} from 'http'
 import {URL} from "./commons"
 
 let server: Server
-let token: string
 
 describe('Test', function () {
   // let server = null
@@ -28,6 +27,7 @@ describe('Test', function () {
   require('./auth')
   require('./user')
   require('./middleware')
+  require('./story')
 
   // For the home routes.
   describe('Home', function () {
