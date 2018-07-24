@@ -66,3 +66,12 @@ export async function getStory(id: Schema.Types.ObjectId): Promise<IStory> {
 export async function destroyStory(id: Schema.Types.ObjectId): Promise<void> {
   return models.Story.deleteOne({_id: id})
 }
+
+/**
+ * Get all of a user's stories
+ * @param {IUser} user
+ * @returns {Promise<IStory[]>}
+ */
+export async function getUserStories(user: IUser): Promise<IStory[]> {
+  return await models.Story.find({_id: { $in: user.stories }})
+}

@@ -1,8 +1,10 @@
 import {IUser} from "../web/schemas/user"
 import {destroyUser, generateToken, storeUser} from "../web/controllers/auth"
 import {IStory} from "../web/schemas/story"
-import {assert} from 'chai'
+import {assert, expect} from 'chai'
 import {destroyStory, getStory, storeStory, updateStory} from "../web/controllers/story"
+import Axios, {AxiosResponse} from "axios";
+import {URL} from "./commons";
 
 let user: IUser
 let token: string
@@ -65,6 +67,44 @@ describe('Story', function () {
             assert.isTrue(stored === null)
             done()
           })
+        })
+      })
+    })
+  })
+
+  describe('API', function () {
+    let story: IStory
+
+    after(async function () {
+      await destroyStory(story._id)
+    })
+
+    describe('Store a story', function () {
+      it('Should return the users stories', function (done) {
+        const storyData = {
+          story: 'This is some text',
+          start: 'Ireland',
+          end: 'UK',
+          message: 'This is a message'
+        }
+
+        Axios.post(`${URL}/api/story/store`, storyData, {headers: {'x-access-token': token}})
+          .then((response: AxiosResponse) => {
+            expect(response.status).to.equal(200)
+            expect(response.data.payload.story).to.equal(storyData.story)
+            story = response.data.payload
+            done()
+        })
+      })
+    })
+
+    describe('Get user\'s stories', function () {
+      it('Should return the users stories', function (done) {
+        Axios.get(`${URL}/api/story/get`, {headers: {'x-access-token': token}}).then((response: AxiosResponse) => {
+          console.log(response.data.payload)
+          expect(response.status).to.equal(200)
+          expect(response.data.payload[0].story).to.equal('This is some text')
+          done()
         })
       })
     })

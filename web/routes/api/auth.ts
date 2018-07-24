@@ -5,7 +5,7 @@ import {authenticateUser, generateToken, storeUser} from "../../controllers/auth
 
 let routes: Router
 
-const auth = () => {
+export const authRouter = () => {
   routes = Router()
   routes.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     // Get username and password
@@ -63,5 +63,3 @@ const auth = () => {
   })
   return routes
 }
-
-export default auth

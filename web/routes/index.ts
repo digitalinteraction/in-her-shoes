@@ -1,19 +1,19 @@
 import { Express } from 'express'
 
 import home from './home'
-import auth from './api/auth'
-import user from './api/user'
+import {authRouter} from './api/auth'
+import {userRouter} from './api/user'
+import {storyRouter} from "./api/story";
 
 /**
- * Add routes to app
+ * Router
  * @param {e.Express} app
  * @returns {e.Express}
  */
-const addRoutes = (app: Express) => {
+export const addRoutes = (app: Express) => {
   app.use('/', home())
-  app.use('/api/auth', auth())
-  app.use('/api/user', user())
+  app.use('/api/auth', authRouter())
+  app.use('/api/user', userRouter())
+  app.use('/api/story', storyRouter())
   return app
 }
-
-export default addRoutes

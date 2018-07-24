@@ -5,7 +5,7 @@ import * as cors from 'cors'
 import * as dotenv from 'dotenv'
 import * as handler from './middleware/handler'
 import * as mongoose from 'mongoose'
-import addRoutes from './routes'
+import {addRoutes} from './routes'
 dotenv.load()
 
 export class App {

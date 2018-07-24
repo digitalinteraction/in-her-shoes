@@ -1,4 +1,4 @@
-import {IUser} from "../schemas/user";
+import {IUser, IUserModel} from "../schemas/user";
 import * as jwt from "jsonwebtoken";
 import models from "../models";
 import * as crypto from "crypto";
@@ -111,7 +111,7 @@ async function getUserUsername(username: string): Promise<IUser> {
  * Get user by id
  * @param id
  */
-async function getUserId(id: Schema.Types.ObjectId): Promise<IUser> {
+export async function getUserId(id: Schema.Types.ObjectId): Promise<IUser> {
   return await models.User.findOne({_id: id})
 }
 
@@ -120,7 +120,7 @@ async function getUserId(id: Schema.Types.ObjectId): Promise<IUser> {
  * @param identifier: string | Schema.Types.ObjectId
  */
 export async function getUser(identifier: string | Schema.Types.ObjectId): Promise<IUser> {
-  return typeof identifier === 'string' ? await getUserUsername(identifier): await getUserId(identifier)
+  return identifier instanceof Schema.Types.ObjectId ? await getUserId(identifier): await getUserUsername(identifier)
 }
 
 /**
