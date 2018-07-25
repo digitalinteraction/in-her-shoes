@@ -1,4 +1,4 @@
-import {IUser, IUserModel} from "../schemas/user";
+import {IUser} from "../schemas/user";
 import * as jwt from "jsonwebtoken";
 import models from "../models";
 import * as crypto from "crypto";

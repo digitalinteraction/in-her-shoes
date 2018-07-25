@@ -1,4 +1,6 @@
 import { Schema, Document } from 'mongoose'
+import models from "../models";
+import {IExpense} from "./expense";
 
 const schemaOptions = {
   timestamps: true
@@ -11,12 +13,15 @@ export interface IStory extends Document {
   end?: string
   messageStranger?: string
   thankYouNote?: string
-  expenses?: object
+  expense?: Schema.Types.ObjectId
   photoPath?: string
   isBeingModerated: boolean
   isPublished: boolean
   createdAt: string
   updatedAt: string
+
+  // Functions
+  getExpense(): Promise<IExpense>
 }
 
 export const StorySchema = new Schema({
@@ -39,8 +44,9 @@ export const StorySchema = new Schema({
   thankYouNote: {
     type: String
   },
-  expenses: {
-    type: String
+  expense: {
+    type: Schema.Types.ObjectId,
+    ref: 'Expense'
   },
   photoPath: {
     type: String
@@ -56,3 +62,11 @@ export const StorySchema = new Schema({
     required: true
   }
 }, schemaOptions)
+
+/**
+ * Get the expense for a story instead of an mongo object id.
+ * @returns {Promise<IExpense>}
+ */
+StorySchema.methods.getExpense = async function(): Promise<IExpense> {
+  return await models.Expense.findOne({_id: this.expense})
+}

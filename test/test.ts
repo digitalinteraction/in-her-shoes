@@ -28,6 +28,7 @@ describe('Test', function () {
   require('./user')
   require('./middleware')
   require('./story')
+  require('./expense')
 
   // For the home routes.
   describe('Home', function () {

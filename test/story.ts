@@ -101,9 +101,8 @@ describe('Story', function () {
     describe('Get user\'s stories', function () {
       it('Should return the users stories', function (done) {
         Axios.get(`${URL}/api/story/get`, {headers: {'x-access-token': token}}).then((response: AxiosResponse) => {
-          console.log(response.data.payload)
           expect(response.status).to.equal(200)
-          expect(response.data.payload[0].story).to.equal('This is some text')
+          expect(response.data.payload.stories[0].story).to.equal('This is some text')
           done()
         })
       })

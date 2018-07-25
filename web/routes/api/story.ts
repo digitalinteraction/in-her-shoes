@@ -6,6 +6,7 @@ import {Reply} from "../../reply";
 import {IUser} from "../../schemas/user";
 import {getUserId} from "../../controllers/auth";
 import {Schema} from "mongoose";
+import {IExpense} from "../../schemas/expense";
 
 let router: Router
 
@@ -81,10 +82,26 @@ export const storyRouter = () => {
     try {
       stories = await user.getStories()
     } catch (e) {
-      console.log(stories)
+      e.message = '500'
+      return next(e)
     }
 
-    return res.json(new Reply(200, 'success', false, stories || []))
+    // Get full expenses if story has one
+    let expenses: IExpense[] = []
+    for (let story of stories) {
+      if (story.expense) {
+        let expense: IExpense = await story.getExpense()
+        expenses.push(expense)
+      }
+    }
+
+    // Construct payload
+    const payload = {
+      stories: stories || [],
+      expenses: expenses
+    }
+
+    return res.json(new Reply(200, 'success', false, payload))
   })
 
   return router
