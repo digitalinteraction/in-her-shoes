@@ -118,6 +118,8 @@ export async function getUserId(id: Schema.Types.ObjectId): Promise<IUser> {
 /**
  * get user by id or username
  * @param identifier: string | Schema.Types.ObjectId
+ *
+ * TODO: fix ids being interpreted as strings when passed from request body
  */
 export async function getUser(identifier: string | Schema.Types.ObjectId): Promise<IUser> {
   return identifier instanceof Schema.Types.ObjectId ? await getUserId(identifier): await getUserUsername(identifier)

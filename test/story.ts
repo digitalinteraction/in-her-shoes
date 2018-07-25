@@ -107,5 +107,35 @@ describe('Story', function () {
         })
       })
     })
+
+    describe('Edit a story', function () {
+      it('should update a story', function (done) {
+        const storyData = {
+          story: 'This is some updated text',
+          start: 'Ireland',
+          end: 'UK',
+          message: 'This is a message',
+          id: story._id
+        }
+
+        Axios.post(`${URL}/api/story/edit`, storyData, {headers: {'x-access-token': token}}).then((response: AxiosResponse) => {
+          expect(response.status).to.equal(200)
+          expect(response.data.payload.story).to.equal(storyData.story)
+          done()
+        })
+      })
+    })
+
+    describe('Destroy a story', function () {
+      it('should remove the story from the database', function (done) {
+        Axios.delete(`${URL}/api/story/destroy/${story._id}`, {headers:{'x-access-token': token}}).then((response: AxiosResponse) => {
+          expect(response.status).to.equal(200)
+          getStory(story._id).then((storedStory) => {
+            assert.isNull(storedStory)
+            done()
+          })
+        })
+      })
+    })
   })
 })

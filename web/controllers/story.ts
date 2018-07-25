@@ -9,7 +9,7 @@ import {Schema} from "mongoose";
  * @param {IUser} user
  * @returns {Promise<IStory>}
  */
-export function storeStory(storyData: {
+export async function storeStory(storyData: {
   story?: string,
   start?: string,
   end?: string,
@@ -18,10 +18,7 @@ export function storeStory(storyData: {
   phoToPath?: string,
   user?: Schema.Types.ObjectId
 }, user?: IUser): Promise<IStory> {
-  if (user) {
-    storyData.user = user._id
-  }
-  return models.Story.create({
+  const story: IStory = await models.Story.create({
     story: storyData.story,
     start: storyData.start,
     end: storyData.end,
@@ -29,6 +26,13 @@ export function storeStory(storyData: {
     thankYouNote: storyData.thankYouNote,
     photoToPath: storyData.phoToPath
   })
+
+  if (user) {
+    story.user = user._id
+    await story.save()
+  }
+
+  return story
 }
 
 /**
