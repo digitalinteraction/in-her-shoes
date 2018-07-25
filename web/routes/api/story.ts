@@ -8,6 +8,7 @@ import {getUserId} from "../../controllers/auth";
 import {Schema} from "mongoose";
 import {IExpense} from "../../schemas/expense";
 import {storeExpense} from "../../controllers/expense";
+import {isStoryOwner} from "../../middleware/owner";
 
 let router: Router
 
@@ -111,6 +112,38 @@ export const storyRouter = () => {
     return res.json(new Reply(200, 'success', false, payload))
   })
 
+  router.get('/get/:storyId', async (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals.error) {
+      return next(new Error(`${res.locals.error}`))
+    }
+
+    if (!req.params.storyId) {
+      return next(new Error('400'))
+    }
+
+    let story: IStory
+    try {
+      story = await getStory(req.params.storyId)
+    } catch (e) {
+      e.message = '500'
+    }
+
+    if (!story) {
+      return next(new Error('404'))
+    }
+
+    return res.json(new Reply(200, 'success', false, story))
+  })
+
+  /**
+   *********************************************************************************************************************
+   * User must own story to access any of the endpoints below
+   *********************************************************************************************************************
+   */
+
+  // Set middleware to check user is resource owner
+  router.use(isStoryOwner)
+
   /**
    * Edit a story
    */
@@ -118,23 +151,8 @@ export const storyRouter = () => {
     if (res.locals.error) {
       return next(new Error(`${res.locals.error}`))
     }
-    let story: IStory
-    try {
-      story = await getStory(req.body.id)
-    } catch (e) {
-      e.message = '500'
-      return next(e)
-    }
-    if(!story) {
-      return next(new Error('404'))
-    }
 
-    // Reject if story does not belong to user
-    // TODO: fix hacky string casting
-    if (`${story.user}` !== `${res.locals.user.id}`) {
-      return next(new Error('403'))
-    }
-
+    let story: IStory = res.locals.story
     let storyData = {
       story: req.body.story || '',
       start: req.body.start || '',
@@ -144,48 +162,13 @@ export const storyRouter = () => {
     }
 
     try {
-      story = await updateStory(storyData, req.body.id)
+      story = await updateStory(storyData, story._id)
     } catch (e) {
       e.message = '500'
       return next(e)
     }
 
     return res.json(new Reply(200, 'success', false, story))
-  })
-
-  /**
-   * Destroy a story
-   */
-  router.delete('/destroy/:id', async (req: Request, res: Response, next: NextFunction) => {
-    if (res.locals.error) {
-      return next(new Error(`${res.locals.error}`))
-    }
-    let story: IStory
-    try {
-      story = await getStory(req.params.id)
-    } catch (e) {
-      e.message = '500'
-      return next(e)
-    }
-
-    // Reject if story does not exist
-    if(!story) {
-      return next(new Error('404'))
-    }
-
-    // Reject if story does not belong to user
-    // TODO: fix hacky string casting
-    if (`${story.user}` !== `${res.locals.user.id}`) {
-      return next(new Error('403'))
-    }
-
-    try {
-      await destroyStory(story._id)
-    } catch (e) {
-      e.message = '500'
-    }
-
-    return res.json(new Reply(200, 'success', false, null))
   })
 
   /**
@@ -196,35 +179,7 @@ export const storyRouter = () => {
       return next(new Error(`${res.locals.error}`))
     }
 
-    // Get user and story
-    const userId: Schema.Types.ObjectId = res.locals.user.id
-    const storyId: Schema.Types.ObjectId = req.body.storyId
-
-    let user: IUser
-    try {
-      user = await getUserId(userId)
-    } catch (e) {
-      e.message = '500'
-    }
-
-    let story: IStory
-    try {
-      story = await getStory(storyId)
-    } catch (e) {
-      e.message = '500'
-    }
-
-    // Reject if story doesn't exist
-    if (!story) {
-      return next(new Error('404'))
-    }
-
-    // Reject if story does not belong to user
-    // TODO: fix hacky string casting
-    if (`${story.user}` !== `${user._id}`) {
-      return next(new Error('403'))
-    }
-
+    const story: IStory = res.locals.story
     const expenseData = {
       procedure: req.body.procedure || 0,
       travel: req.body.travel || 0,
@@ -244,6 +199,25 @@ export const storyRouter = () => {
     }
 
     return res.json(new Reply(200, 'success', false, expense))
+  })
+
+  /**
+   * Destroy a story
+   */
+  router.delete('/destroy/:storyId', async (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals.error) {
+      return next(new Error(`${res.locals.error}`))
+    }
+
+    const story: IStory = res.locals.story
+
+    try {
+      await destroyStory(story._id)
+    } catch (e) {
+      e.message = '500'
+    }
+
+    return res.json(new Reply(200, 'success', false, null))
   })
 
   return router

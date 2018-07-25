@@ -108,6 +108,16 @@ describe('Story', function () {
       })
     })
 
+    describe('Get individual story', function () {
+      it('Should return a story', function (done) {
+        Axios.get(`${URL}/api/story/get/${story._id}`, {headers: {'x-access-token': token}}).then((response: AxiosResponse) => {
+          expect(response.status).to.equal(200)
+          expect(response.data.payload._id).to.equal(`${story._id}`)
+          done()
+        })
+      })
+    })
+
     describe('Edit a story', function () {
       it('should update a story', function (done) {
         const storyData = {
@@ -115,7 +125,7 @@ describe('Story', function () {
           start: 'Ireland',
           end: 'UK',
           message: 'This is a message',
-          id: story._id
+          storyId: story._id
         }
 
         Axios.post(`${URL}/api/story/edit`, storyData, {headers: {'x-access-token': token}}).then((response: AxiosResponse) => {
