@@ -1,7 +1,6 @@
 import * as express from "express"
 import {IStory} from "../schemas/story"
 import {getStory} from "../controllers/story"
-import {Schema} from "mongoose"
 
 /**
  * Check user owns a story
@@ -19,7 +18,7 @@ export async function isStoryOwner (req: express.Request, res: express.Response,
   /*
   Get the story id from the body of a post request, get from the url if not present.
    */
-  const storyId: Schema.Types.ObjectId = req.body.storyId || req.path.split('/')[req.path.split('/').length - 1]
+  let storyId = (req.method === 'POST') ? req.body.storyId || req.headers['storyid'] : req.path.split('/')[req.path.split('/').length - 1]
 
   let story: IStory
   try {
@@ -28,7 +27,7 @@ export async function isStoryOwner (req: express.Request, res: express.Response,
     res.locals.error = 500
     return next()
   }
-  
+
   // Reject if story does not exist
   if(!story) {
     res.locals.error = 404

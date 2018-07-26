@@ -19,6 +19,7 @@ export interface IStory extends Document {
   isPublished: boolean
   createdAt: string
   updatedAt: string
+  media?: Schema.Types.ObjectId
 
   // Functions
   getExpense(): Promise<IExpense>
@@ -60,6 +61,10 @@ export const StorySchema = new Schema({
     type: Boolean,
     default: true,
     required: true
+  },
+  media: {
+    type: Schema.Types.ObjectId,
+    ref: 'Media'
   }
 }, schemaOptions)
 
