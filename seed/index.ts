@@ -24,6 +24,11 @@ async function addStory(storyData: any, user: IUser): Promise<IStory> {
     user: user._id
   }, user)
 
+  story.isBeingModerated = false
+  story.isPublished = true
+
+  await story.save()
+
   await storeExpense(story._id, {
     procedure: storyData.expenses.procedure,
     travel: storyData.expenses.travel,
