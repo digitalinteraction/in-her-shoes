@@ -10,7 +10,8 @@
     "include": [
         "web/**/*",
         "app.ts",
-        "test/**/*"
+        "test/**/*",
+        "seed/**/*"
     ],
     "exclude": [
         "node_modules"
