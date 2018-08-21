@@ -79,3 +79,11 @@ export async function destroyStory(id: Schema.Types.ObjectId): Promise<void> {
 export async function getUserStories(user: IUser): Promise<IStory[]> {
   return await models.Story.find({_id: { $in: user.stories }})
 }
+
+/**
+ * Get all public stories
+ * @return {Promise<IStory[]>}
+ */
+export async function getPublicStories(): Promise<IStory[]> {
+  return await models.Story.find({}).where({'isPublished': true})
+}

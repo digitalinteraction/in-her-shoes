@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from "express";
 import checkToken from './../../middleware/authenticate'
 import {IStory} from "../../schemas/story";
-import {destroyStory, getStory, storeStory, updateStory} from "../../controllers/story";
+import {destroyStory, getStory, storeStory, updateStory, getPublicStories} from "../../controllers/story";
 import {Reply} from "../../reply";
 import {IUser} from "../../schemas/user";
 import {getUserId} from "../../controllers/auth";
@@ -18,6 +18,23 @@ let router: Router
 
 export const storyRouter = () => {
   router = Router()
+
+  /**
+   * Get all public stories from database
+   */
+  router.get('/public', async (req: Request, res: Response, next: NextFunction) => {
+    let stories: IStory[] = []
+
+    try {
+      stories = await getPublicStories()
+    } catch (e) {
+      e.message = '500'
+      return next(e)
+    }
+
+    return res.json(new Reply(200, 'success', false, stories))
+  })
+
   router.use(checkToken)
 
   /**

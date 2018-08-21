@@ -136,6 +136,15 @@ describe('Story', function () {
       })
     })
 
+    describe('Get public stories', function () {
+      it('Should return all stories that have been publised', function (done) {
+        Axios.get(`${URL}/api/story/public`).then((response: AxiosResponse) => {
+          expect(response.status).to.equal(200)
+          done()
+        })
+      })
+    })
+
     describe('Destroy a story', function () {
       it('should remove the story from the database', function (done) {
         Axios.delete(`${URL}/api/story/destroy/${story._id}`, {headers:{'x-access-token': token}}).then((response: AxiosResponse) => {
