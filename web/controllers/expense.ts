@@ -16,11 +16,14 @@ export async function storeExpense(storyId: Schema.Types.ObjectId, expenseData: 
   childcare?: number,
   accommodation?: number,
   other?: number,
-  paidDaysMissed?: number
+  paidDaysMissed?: number,
+  currency?: string
 }): Promise<IExpense> {
   if (!storyId) {
     throw new Error('story id cannot be null')
   }
+
+  console.log(expenseData.currency)
 
   return await models.Expense.create({
     procedure: expenseData.procedure || 0,
@@ -30,6 +33,7 @@ export async function storeExpense(storyId: Schema.Types.ObjectId, expenseData: 
     accommodation: expenseData.accommodation || 0,
     other: expenseData.other || 0,
     paidDaysMissed: expenseData.paidDaysMissed || 0,
+    currency: expenseData.currency || '€',
     story: storyId
   })
 }
@@ -50,7 +54,8 @@ export async function editExpense(id: Schema.Types.ObjectId, expenseData: {
   childcare?: number,
   accommodation?: number,
   other?: number,
-  paidDaysMissed?: number
+  paidDaysMissed?: number,
+  currency?: string
 }): Promise<IExpense> {
   await models.Expense.update({_id: id}, expenseData)
   return await getExpense(id)

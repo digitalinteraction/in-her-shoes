@@ -208,7 +208,8 @@ export const storyRouter = () => {
       childcare: req.body.childcare || 0,
       accommodation: req.body.accommodation,
       other: req.body.other || 0,
-      paidDaysMissed: req.body.paidDaysMissed || 0
+      paidDaysMissed: req.body.paidDaysMissed || 0,
+      currency: req.body.currency || '€'
     }
 
     let expense: IExpense

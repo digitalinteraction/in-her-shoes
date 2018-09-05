@@ -1,10 +1,11 @@
-import * as data from './../../seed/seed-data.json'
 import { IUser } from '../web/schemas/user'
 import { IStory } from '../web/schemas/story'
 import { storeUser} from '../web/controllers/auth'
 import { storeStory } from '../web/controllers/story'
 import * as mongoose from "mongoose";
 import {storeExpense} from "../web/controllers/expense"
+
+const data = require('./seed_data').data
 
 /**
  * Store a user and generate a token
@@ -36,7 +37,8 @@ async function addStory(storyData: any, user: IUser): Promise<IStory> {
     childcare: storyData.expenses.childcare,
     accommodation: storyData.expenses.accommodation,
     other: storyData.expenses.other,
-    paidDaysMissed: storyData.expenses.paidDaysMissed
+    paidDaysMissed: storyData.expenses.paidDaysMissed,
+    currency: storyData.expenses.currency
   })
 
   return story
@@ -44,7 +46,7 @@ async function addStory(storyData: any, user: IUser): Promise<IStory> {
 
 const main = async () => {
   mongoose.connect(process.env.MONGO_URI)
-  console.log(data.stories.length)
+  console.log(data)
 
   let user: IUser
   try {

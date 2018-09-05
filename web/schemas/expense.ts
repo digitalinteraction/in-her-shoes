@@ -16,6 +16,7 @@ export interface IExpense extends Document {
   accommodation: number
   other: number
   paidDaysMissed: number
+  currency: string
 
   // Functions
   getStory(): Promise<IStory>
@@ -54,6 +55,11 @@ export const ExpenseSchema = new Schema({
   paidDaysMissed: {
     type: Number,
     default: 0
+  },
+  currency: {
+    type: String,
+    required: true,
+    enum: ['£', '€']
   }
 }, schemaOptions)
 
