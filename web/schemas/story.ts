@@ -73,5 +73,5 @@ export const StorySchema = new Schema({
  * @returns {Promise<IExpense>}
  */
 StorySchema.methods.getExpense = async function(): Promise<IExpense> {
-  return await models.Expense.findOne({_id: this.expense})
+  return await models.Expense.findOne({story: this._id})
 }

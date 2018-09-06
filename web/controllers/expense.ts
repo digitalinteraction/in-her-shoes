@@ -23,8 +23,6 @@ export async function storeExpense(storyId: Schema.Types.ObjectId, expenseData: 
     throw new Error('story id cannot be null')
   }
 
-  console.log(expenseData.currency)
-
   return await models.Expense.create({
     procedure: expenseData.procedure || 0,
     travel: expenseData.travel || 0,

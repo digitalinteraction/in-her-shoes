@@ -32,7 +32,22 @@ export const storyRouter = () => {
       return next(e)
     }
 
-    return res.json(new Reply(200, 'success', false, stories))
+    // Attach expenses to each story
+    let payload: {}[] = []
+    for (let i: number = 0; i < stories.length; i++) {
+      try {
+        const expense: IExpense = await stories[i].getExpense()
+        const item = {
+          story: stories[i],
+          expense: expense || null
+        }
+        payload.push(item)
+      } catch (e) {
+        e.message = '500'
+        return next(e)
+      }
+    }
+    return res.json(new Reply(200, 'success', false, payload))
   })
 
   router.use(checkToken)
