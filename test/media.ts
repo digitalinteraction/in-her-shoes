@@ -51,7 +51,7 @@ describe('Media', function () {
       const file = fs.createReadStream(path.join(__dirname, '../../test.jpg'))
       formData.append("file", file)
 
-      Axios.post(`${URL}/api/story/media/upload`, formData, {
+      Axios.post(`${URL}/api/media/upload`, formData, {
         headers: {
           'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
           'x-access-token': token,
@@ -62,6 +62,7 @@ describe('Media', function () {
         expect(fs.existsSync(response.data.payload.path)).to.be.true
         done()
       }).catch((error: AxiosError) => {
+        console.log(error)
         throw error
       })
     })

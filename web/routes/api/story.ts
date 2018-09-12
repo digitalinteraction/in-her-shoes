@@ -9,11 +9,7 @@ import {Schema} from "mongoose";
 import {IExpense} from "../../schemas/expense";
 import {storeExpense} from "../../controllers/expense";
 import {isStoryOwner} from "../../middleware/owner";
-import * as multer from 'multer'
-import {IMedia} from "../../schemas/media";
-import {storeMedia, storeMediaRecord} from "../../controllers/media";
 
-let upload = multer({ dest: 'uploads/' })
 let router: Router
 
 export const storyRouter = () => {
@@ -255,36 +251,6 @@ export const storyRouter = () => {
     }
 
     return res.json(new Reply(200, 'success', false, null))
-  })
-
-  /**
-   * Upload an image for a story
-   */
-  router.post('/media/upload', upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
-    if (res.locals.error) {
-      return next(new Error(`${res.locals.error}`))
-    }
-
-    if (req.file === undefined) {
-      return next(new Error('400'))
-    }
-
-    const mimeType = req.file.mimetype
-    let ext = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1]
-
-    let imagePath: string
-    let story: IStory = res.locals.story
-    let media: IMedia
-
-    try {
-      imagePath = await storeMedia(req.file.path, req.file.originalname, ext)
-      media = await storeMediaRecord(imagePath, mimeType, story)
-    } catch (e) {
-      e.message = '500'
-      return next(e)
-    }
-
-    return res.json(new Reply(200, 'success', false, media))
   })
 
   return router
