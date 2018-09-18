@@ -27,6 +27,7 @@ export async function getStartAndEndPositions(start: string, end: string): Promi
  * @return      URL
  */
 export function getURL(city: string): string {
+  city = encodeURI(city)
   return `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${process.env.GEOCODE}`
 }
 
@@ -36,8 +37,14 @@ export function getURL(city: string): string {
  * @return     [description]
  */
 export async function getGeocodeFromCity(city: string): Promise<IPosition> {
-  city = city.toLowerCase()
-  
+  city = city.replace('United Kingdom', 'UK')
+    .replace('England', 'UK')
+    .replace('Scotland', 'UK')
+    .replace('Scottland', 'UK')
+    .replace('Wales', 'UK')
+    .replace('Northern Ireland', 'UK')
+    .toLowerCase()
+    
   // Check if already exists before completing lookup
   const storedCity = await getPositionByCity(city)
   if (storedCity) return storedCity
