@@ -1,6 +1,6 @@
 import {Schema, Document} from 'mongoose'
 import models from "../models";
-import {IStory, StorySchema} from "./story";
+import {IStory} from "./story";
 
 const schemaOptions = {
   timestamps: true
