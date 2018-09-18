@@ -4,6 +4,8 @@ import { storeUser} from '../web/controllers/auth'
 import { storeStory } from '../web/controllers/story'
 import * as mongoose from "mongoose";
 import {storeExpense} from "../web/controllers/expense"
+import * as dotenv from 'dotenv'
+dotenv.load()
 
 const data = require('./seed_data').data
 

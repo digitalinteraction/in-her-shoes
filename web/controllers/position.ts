@@ -44,13 +44,16 @@ export async function getGeocodeFromCity(city: string): Promise<IPosition> {
     .replace('Wales', 'UK')
     .replace('Northern Ireland', 'UK')
     .toLowerCase()
-    
+
   // Check if already exists before completing lookup
   const storedCity = await getPositionByCity(city)
   if (storedCity) return storedCity
 
   const url = getURL(city)
+  console.log(url)
   const response: AxiosResponse = await Axios.get(url)
+
+  console.log(response.data.results[0])
 
   return await createPosition({
     lat: parseFloat(response.data.results[0].geometry.location.lat),
