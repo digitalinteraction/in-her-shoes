@@ -9,6 +9,7 @@ import {Schema} from "mongoose";
 import {IExpense} from "../../schemas/expense";
 import {storeExpense} from "../../controllers/expense";
 import {isStoryOwner} from "../../middleware/owner";
+import { IPosition } from '../../schemas/position'
 
 let router: Router
 
@@ -33,9 +34,11 @@ export const storyRouter = () => {
     for (let i: number = 0; i < stories.length; i++) {
       try {
         const expense: IExpense = await stories[i].getExpense()
+        const positions: IPosition[] = await stories[i].getPositions()
         const item = {
           story: stories[i],
-          expense: expense || null
+          expense: expense || null,
+          positions: positions
         }
         payload.push(item)
       } catch (e) {

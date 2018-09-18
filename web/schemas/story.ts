@@ -1,6 +1,7 @@
 import { Schema, Document } from 'mongoose'
 import models from "../models";
 import {IExpense} from "./expense";
+import { IPosition } from './position'
 
 const schemaOptions = {
   timestamps: true
@@ -25,6 +26,7 @@ export interface IStory extends Document {
 
   // Functions
   getExpense(): Promise<IExpense>
+  getPositions(): Promise<IPosition[]>
 }
 
 export const StorySchema = new Schema({
@@ -84,4 +86,21 @@ export const StorySchema = new Schema({
  */
 StorySchema.methods.getExpense = async function(): Promise<IExpense> {
   return await models.Expense.findOne({story: this._id})
+}
+
+/**
+ * Get position objects from ids
+ * @return {Promise<IPosition[]>}
+ */
+StorySchema.methods.getPositions = async function(): Promise<IPosition[]> {
+  // Return empty array if no position is linked
+  if (!this.startPosition && !this.endPosition) return []
+
+  const start = await models.Position.findOne({_id: this.startPosition})
+  const end = await models.Position.findOne({_id: this.endPosition})
+
+  return [
+    start,
+    end
+  ]
 }
