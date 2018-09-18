@@ -7,16 +7,13 @@ import models from './../models'
  * @param  end   End city
  * @return       [lat, long]
  */
-export async function getLatLongsFromCity(start: string, end: string): Promise<IPosition[]> {
+export async function getStartAndEndPositions(start: string, end: string): Promise<IPosition[]> {
   if (start.length < 1 || end.length < 0) {
     throw new Error('city names cannot be empty')
   }
 
-  const UrlStart = getURL(start)
-  const UrlEnd = getURL(end)
-
-  const positionStart = await getGeocodeFromCity(UrlStart)
-  const positionEnd = await getGeocodeFromCity(UrlEnd)
+  const positionStart = await getGeocodeFromCity(start)
+  const positionEnd = await getGeocodeFromCity(end)
 
   return [
     positionStart,
@@ -39,10 +36,12 @@ export function getURL(city: string): string {
  * @return     [description]
  */
 export async function getGeocodeFromCity(city: string): Promise<IPosition> {
+  city = city.toLowerCase()
+  
   // Check if already exists before completing lookup
   const storedCity = await getPositionByCity(city)
   if (storedCity) return storedCity
-  
+
   const url = getURL(city)
   const response: AxiosResponse = await Axios.get(url)
 

@@ -2,6 +2,8 @@ import {IUser} from "../schemas/user";
 import models from "../models";
 import {IStory} from "../schemas/story";
 import {Schema} from "mongoose";
+import { IPosition } from '../schemas/position'
+import { getStartAndEndPositions } from '../controllers/position'
 
 /**
  * Store a story
@@ -32,6 +34,14 @@ export async function storeStory(storyData: {
     await story.save()
   }
 
+  if (story.start && story.end) {
+    const positions: IPosition[] = await getStartAndEndPositions(story.start, story.end)
+    story.startPosition = positions[0]._id
+    story.endPosition = positions[1]._id
+
+    await story.save()
+  }
+
   return story
 }
 
@@ -47,9 +57,18 @@ export async function updateStory(storyData: {
   end?: string,
   messageStranger?: string,
   thankYouNote?: string,
-  phoToPath?: string
+  phoToPath?: string,
+  startPosition?: Schema.Types.ObjectId,
+  endPosition?: Schema.Types.ObjectId
 }, id: Schema.Types.ObjectId): Promise<IStory> {
+  if (storyData.start && storyData.end) {
+    const positions: IPosition[] = await getStartAndEndPositions(storyData.start, storyData.end)
+    storyData.startPosition = positions[0]._id
+    storyData.endPosition = positions[1]._id
+  }
+
   await models.Story.update({_id: id}, storyData)
+  
   return await getStory(id)
 }
 

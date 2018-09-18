@@ -20,6 +20,8 @@ export interface IStory extends Document {
   createdAt: string
   updatedAt: string
   media?: Schema.Types.ObjectId
+  startPosition?: Schema.Types.ObjectId
+  endPosition?: Schema.Types.ObjectId
 
   // Functions
   getExpense(): Promise<IExpense>
@@ -65,6 +67,14 @@ export const StorySchema = new Schema({
   media: {
     type: Schema.Types.ObjectId,
     ref: 'Media'
+  },
+  startPosition: {
+    type: Schema.Types.ObjectId,
+    ref: 'Position'
+  },
+  endPosition: {
+    type: Schema.Types.ObjectId,
+    ref: 'Position'
   }
 }, schemaOptions)
 

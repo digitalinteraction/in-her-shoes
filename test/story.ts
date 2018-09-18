@@ -26,8 +26,8 @@ describe('Story', function () {
       it('should store a story in the database', function (done) {
         const storyData = {
           story: 'This is some text',
-          start: 'Ireland',
-          end: 'UK',
+          start: 'cork,Ireland',
+          end: 'LONDON,UK',
           message: 'This is a message'
         }
 
