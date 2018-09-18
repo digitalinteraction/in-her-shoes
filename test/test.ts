@@ -30,6 +30,7 @@ describe('Test', function () {
   require('./story')
   require('./expense')
   require('./media')
+  require('./location')
 
   // For the home routes.
   describe('Home', function () {
