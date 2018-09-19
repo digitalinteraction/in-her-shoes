@@ -1,16 +1,16 @@
-import {storeMedia} from "../web/controllers/media";
+import {storeMedia} from "../../web/controllers/media";
 import * as path from "path";
 import * as fs from "fs";
 import {expect} from 'chai'
 import {promisify} from "util";
 import * as FormData from 'form-data'
 import Axios, {AxiosError, AxiosResponse} from "axios";
-import {URL} from "./commons";
-import { generateToken } from "../web/controllers/auth";
-import { destroyUser, storeUser } from '../web/controllers/user'
-import {IUser} from "../web/schemas/user";
-import {IStory} from "../web/schemas/story";
-import {destroyStory, storeStory} from "../web/controllers/story";
+import {URL} from "../commons";
+import { generateToken } from "../../web/controllers/auth";
+import { destroyUser, storeUser } from '../../web/controllers/user'
+import {IUser} from "../../web/schemas/user";
+import {IStory} from "../../web/schemas/story";
+import {destroyStory, storeStory} from "../../web/controllers/story";
 
 const rename = promisify(fs.rename)
 let testFilePath: string

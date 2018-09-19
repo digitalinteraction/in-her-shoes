@@ -1,6 +1,6 @@
 import {expect} from 'chai'
-import { getGeocodeFromCity } from './../web/controllers/position'
-import { IPosition } from './../web/schemas/position'
+import { getGeocodeFromCity } from '../../web/controllers/position'
+import { IPosition } from '../../web/schemas/position'
 
 describe('Location', function() {
   describe('Get position for a city', function() {

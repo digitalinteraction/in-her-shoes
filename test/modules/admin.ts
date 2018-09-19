@@ -1,5 +1,5 @@
-import { IStory } from '../web/schemas/story'
-import { getUnpublished } from '../web/controllers/story'
+import { IStory } from '../../web/schemas/story'
+import { getUnpublished } from '../../web/controllers/story'
 import { expect } from 'chai'
 
 describe('Admin', function () {

@@ -1,12 +1,12 @@
 import {describe} from "mocha";
 import Axios, {AxiosError, AxiosResponse} from "axios";
-import {URL} from "./commons";
+import {URL} from "../commons";
 import {expect} from "chai";
-import {IUser} from "../web/schemas/user";
-import { generateToken } from "../web/controllers/auth";
-import { destroyUser, storeUser } from '../web/controllers/user'
-import {IStory} from "../web/schemas/story";
-import {destroyStory, storeStory} from "../web/controllers/story";
+import {IUser} from "../../web/schemas/user";
+import { generateToken } from "../../web/controllers/auth";
+import { destroyUser, storeUser } from '../../web/controllers/user'
+import {IStory} from "../../web/schemas/story";
+import {destroyStory, storeStory} from "../../web/controllers/story";
 
 describe('Middleware', function () {
   describe('Authentication', function () {

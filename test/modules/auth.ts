@@ -1,9 +1,9 @@
 import {describe} from "mocha"
 import Axios, {AxiosError, AxiosResponse} from "axios"
 import {expect} from "chai"
-import {URL} from "./commons"
-import {IUser} from "../web/schemas/user";
-import {destroyUser} from "../web/controllers/user";
+import {URL} from "./../commons"
+import {IUser} from "../../web/schemas/user";
+import {destroyUser} from "../../web/controllers/user";
 
 describe('Auth', function () {
   let user: IUser

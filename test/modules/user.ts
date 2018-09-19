@@ -1,10 +1,10 @@
 import {describe} from "mocha";
 import Axios, {AxiosResponse} from "axios";
-import {URL} from "./commons";
+import {URL} from "../commons";
 import {expect} from "chai";
-import {IUser} from "../web/schemas/user";
-import { generateToken } from "../web/controllers/auth";
-import { destroyUser, storeUser } from '../web/controllers/user'
+import {IUser} from "../../web/schemas/user";
+import { generateToken } from "../../web/controllers/auth";
+import { destroyUser, storeUser } from '../../web/controllers/user'
 
 let user: IUser
 let token: string

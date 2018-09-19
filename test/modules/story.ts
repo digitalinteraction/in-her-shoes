@@ -1,11 +1,11 @@
-import {IUser} from "../web/schemas/user"
-import { generateToken } from "../web/controllers/auth";
-import { destroyUser, storeUser } from '../web/controllers/user'
-import {IStory} from "../web/schemas/story"
+import {IUser} from "../../web/schemas/user"
+import { generateToken } from "../../web/controllers/auth";
+import { destroyUser, storeUser } from '../../web/controllers/user'
+import {IStory} from "../../web/schemas/story"
 import {assert, expect} from 'chai'
-import {destroyStory, getStory, storeStory, updateStory} from "../web/controllers/story"
+import {destroyStory, getStory, storeStory, updateStory} from "../../web/controllers/story"
 import Axios, {AxiosResponse} from "axios";
-import {URL} from "./commons";
+import {URL} from "../commons";
 
 let user: IUser
 let token: string
