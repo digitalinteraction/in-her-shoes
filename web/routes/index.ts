@@ -18,6 +18,6 @@ export const addRoutes = (app: Express) => {
   app.use('/api/user', userRouter())
   app.use('/api/story', storyRouter())
   app.use('/api/media', mediaRouter())
-  app.use('api/admin', adminRouter())
+  app.use('/api/admin', adminRouter())
   return app
 }

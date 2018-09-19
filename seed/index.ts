@@ -1,6 +1,6 @@
 import { IUser } from '../web/schemas/user'
 import { IStory } from '../web/schemas/story'
-import { storeUser} from '../web/controllers/auth'
+import { storeUser} from '../web/controllers/user'
 import { storeStory } from '../web/controllers/story'
 import * as mongoose from "mongoose";
 import {storeExpense} from "../web/controllers/expense"

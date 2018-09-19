@@ -33,7 +33,7 @@ describe('Media', function () {
 
   describe('Store media', function () {
     it('Should store a file in the uploads folder', function (done) {
-      storeMedia(path.join(__dirname, '../../test.jpg'), 'test.jpg', 'jpg').then((filepath: string) => {
+      storeMedia(path.join(__dirname, '../../../test.jpg'), 'test.jpg', 'jpg').then((filepath: string) => {
         testFilePath = filepath
         expect(fs.existsSync(filepath)).to.be.true
         done()
@@ -41,7 +41,7 @@ describe('Media', function () {
     })
 
     after (async () => {
-      await rename(testFilePath, path.join(__dirname, '../../test.jpg'))
+      await rename(testFilePath, path.join(__dirname, '../../../test.jpg'))
     })
   })
 
@@ -49,7 +49,7 @@ describe('Media', function () {
   describe('Upload media', function () {
     it('Should post and store data', function (done) {
       let formData = new FormData()
-      const file = fs.createReadStream(path.join(__dirname, '../../test.jpg'))
+      const file = fs.createReadStream(path.join(__dirname, '../../../test.jpg'))
       formData.append("file", file)
 
       Axios.post(`${URL}/api/media/upload`, formData, {

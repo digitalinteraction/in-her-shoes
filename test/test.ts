@@ -24,14 +24,14 @@ describe('Test', function () {
     await server.close()
   })
 
-  require('./auth')
-  require('./user')
-  require('./middleware')
-  require('./story')
-  require('./expense')
-  require('./media')
-  require('./location')
-  require('./admin')
+  require('./modules/auth')
+  require('./modules/user')
+  require('./modules/middleware')
+  require('./modules/story')
+  require('./modules/expense')
+  require('./modules/media')
+  require('./modules/location')
+  require('./modules/admin')
 
   // For the home routes.
   describe('Home', function () {

@@ -2,11 +2,17 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { getUnpublished } from '../../controllers/story'
 import { IStory } from '../../schemas/story'
 import { Reply } from '../../reply'
+import isAdmin from '../../middleware/admin'
+import checkToken from '../../middleware/authenticate'
 
 let router: Router
 
 export const adminRouter = () => {
   router = Router()
+
+  router.use(checkToken)
+  router.use(isAdmin)
+
 
   /**
    * Get all unpublised stories
@@ -15,6 +21,10 @@ export const adminRouter = () => {
    * @return
    */
   router.get('/unpublished', async (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals.error) {
+      return next(new Error(`${res.locals.error}`))
+    }
+    
     let unpublished: IStory[]
 
     try {
