@@ -5,6 +5,7 @@ import { authRouter } from './api/auth'
 import { userRouter } from './api/user'
 import { storyRouter } from './api/story'
 import { mediaRouter } from './api/media'
+import { adminRouter } from './api/admin'
 
 /**
  * Router
@@ -17,5 +18,6 @@ export const addRoutes = (app: Express) => {
   app.use('/api/user', userRouter())
   app.use('/api/story', storyRouter())
   app.use('/api/media', mediaRouter())
+  app.use('api/admin', adminRouter())
   return app
 }

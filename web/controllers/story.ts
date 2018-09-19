@@ -68,7 +68,7 @@ export async function updateStory(storyData: {
   }
 
   await models.Story.update({_id: id}, storyData)
-  
+
   return await getStory(id)
 }
 
@@ -105,4 +105,12 @@ export async function getUserStories(user: IUser): Promise<IStory[]> {
  */
 export async function getPublicStories(): Promise<IStory[]> {
   return await models.Story.find({}).where({'isPublished': true})
+}
+
+/**
+ * Get all stories that are being moderated
+ * @return {Promise<IStory>[]}
+ */
+export async function getUnpublished(): Promise<IStory[]> {
+  return await models.Story.find({isBeingModerated: true})
 }

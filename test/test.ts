@@ -31,6 +31,7 @@ describe('Test', function () {
   require('./expense')
   require('./media')
   require('./location')
+  require('./admin')
 
   // For the home routes.
   describe('Home', function () {
