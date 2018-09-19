@@ -114,3 +114,32 @@ export async function getPublicStories(): Promise<IStory[]> {
 export async function getUnpublished(): Promise<IStory[]> {
   return await models.Story.find({isBeingModerated: true})
 }
+
+/**
+ * Publish a story
+ * @return {Promise<IStory>}
+ */
+export async function publishStory(story: IStory): Promise<IStory> {
+  story.isBeingModerated = false
+  story.isPublished = true
+
+  story = await story.save()
+
+  return story
+}
+
+/**
+ * Store a message on a story
+ * @param  story   IStory
+ * @param  message string
+ * @return {Promise<IStory>}
+ */
+export async function addMessageToStory(story: IStory, message: string): Promise<IStory> {
+  if (story.messages) {
+    story.messages.push(message)
+  } else {
+    story.messages = [message]
+  }
+
+  return await story.save()
+}
