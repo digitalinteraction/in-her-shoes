@@ -1,7 +1,8 @@
 import {destroyExpense, editExpense, getExpense, storeExpense} from "../web/controllers/expense";
 import {IUser} from "../web/schemas/user";
 import {IStory} from "../web/schemas/story";
-import {destroyUser, generateToken, storeUser} from "../web/controllers/auth";
+import { generateToken } from "../web/controllers/auth";
+import { destroyUser, storeUser } from '../web/controllers/user'
 import {destroyStory, storeStory} from "../web/controllers/story";
 import {IExpense} from "../web/schemas/expense";
 import {expect, assert} from 'chai'

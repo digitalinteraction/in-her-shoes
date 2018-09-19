@@ -4,7 +4,7 @@ import {IStory} from "../../schemas/story";
 import {destroyStory, getStory, storeStory, updateStory, getPublicStories} from "../../controllers/story";
 import {Reply} from "../../reply";
 import {IUser} from "../../schemas/user";
-import {getUserId} from "../../controllers/auth";
+import {getUserId} from "../../controllers/user";
 import {Schema} from "mongoose";
 import {IExpense} from "../../schemas/expense";
 import {storeExpense} from "../../controllers/expense";

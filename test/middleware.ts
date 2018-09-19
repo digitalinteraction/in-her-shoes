@@ -3,7 +3,8 @@ import Axios, {AxiosError, AxiosResponse} from "axios";
 import {URL} from "./commons";
 import {expect} from "chai";
 import {IUser} from "../web/schemas/user";
-import {destroyUser, generateToken, storeUser} from "../web/controllers/auth";
+import { generateToken } from "../web/controllers/auth";
+import { destroyUser, storeUser } from '../web/controllers/user'
 import {IStory} from "../web/schemas/story";
 import {destroyStory, storeStory} from "../web/controllers/story";
 
@@ -30,7 +31,7 @@ describe('Middleware', function () {
       })
     })
   })
-  
+
   describe('Owner', function () {
     let user: IUser
     let otherUser: IUser

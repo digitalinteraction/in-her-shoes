@@ -1,7 +1,8 @@
 import { Router, Response, Request, NextFunction} from 'express'
 import { Reply } from '../../reply'
 import { IUser } from "../../schemas/user"
-import {authenticateUser, generateToken, storeUser} from "../../controllers/auth";
+import {authenticateUser, generateToken} from "../../controllers/auth";
+import { storeUser } from "../../controllers/user";
 
 let routes: Router
 

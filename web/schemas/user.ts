@@ -12,6 +12,7 @@ export interface IUser extends Document {
   password: string
   iv: string
   stories: Schema.Types.ObjectId[]
+  admin: boolean
   createdAt: string
   updatedAt: string
 
@@ -37,6 +38,10 @@ export const UserSchema = new Schema({
   iv: {
     type: String,
     required: true
+  },
+  admin: {
+    type: Boolean,
+    default: false
   }
 }, schemaOptions)
 

@@ -1,5 +1,6 @@
 import {IUser} from "../web/schemas/user"
-import {destroyUser, generateToken, storeUser} from "../web/controllers/auth"
+import { generateToken } from "../web/controllers/auth";
+import { destroyUser, storeUser } from '../web/controllers/user'
 import {IStory} from "../web/schemas/story"
 import {assert, expect} from 'chai'
 import {destroyStory, getStory, storeStory, updateStory} from "../web/controllers/story"

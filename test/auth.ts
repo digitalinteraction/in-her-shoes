@@ -3,7 +3,7 @@ import Axios, {AxiosError, AxiosResponse} from "axios"
 import {expect} from "chai"
 import {URL} from "./commons"
 import {IUser} from "../web/schemas/user";
-import {destroyUser} from "../web/controllers/auth";
+import {destroyUser} from "../web/controllers/user";
 
 describe('Auth', function () {
   let user: IUser
