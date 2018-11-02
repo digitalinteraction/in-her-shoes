@@ -14,7 +14,7 @@ const data = require('./seed_data').data
  * @return {string} jwt token
  */
 async function getUser(): Promise<IUser> {
-  return await storeUser('tester-user', 'secret')
+  return await storeUser('seed', 'secret')
 }
 
 async function addStory(storyData: any, user: IUser): Promise<IStory> {

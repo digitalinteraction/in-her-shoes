@@ -129,19 +129,24 @@ export const storyRouter = () => {
       return next(e)
     }
 
-    // Get full expenses if story has one
-    let expenses: IExpense[] = []
-    for (let story of stories) {
-      if (story.expense) {
-        let expense: IExpense = await story.getExpense()
-        expenses.push(expense)
-      }
-    }
+    let payload: {}[] = []
 
-    // Construct payload
-    const payload = {
-      stories: stories || [],
-      expenses: expenses
+    for (let story of stories) {
+      let expense: IExpense
+      let positions: IPosition[]
+      try {
+        expense = await story.getExpense()
+        positions = await story.getPositions()
+        const item = {
+          story: story,
+          expense: expense || null,
+          positions: positions || null
+        }
+        payload.push(item)
+      } catch (e) {
+        e.message = '500'
+        return next(e)
+      }
     }
 
     return res.json(new Reply(200, 'success', false, payload))
