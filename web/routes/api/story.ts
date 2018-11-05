@@ -239,7 +239,18 @@ export const storyRouter = () => {
       return next(e)
     }
 
-    return res.json(new Reply(200, 'success', false, expense))
+    let response: any = {}
+
+    try {
+      response.positions = await story.getPositions()
+    } catch (e) {
+      console.error(e)
+    }
+
+    response.story = story
+    response.expenses = expense || null
+
+    return res.json(new Reply(200, 'success', false, response))
   })
 
   /**
