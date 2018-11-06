@@ -49,6 +49,38 @@ export const storyRouter = () => {
     return res.json(new Reply(200, 'success', false, payload))
   })
 
+  router.get('/get/:storyId', async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.params.storyId) {
+      return next(new Error('400'))
+    }
+
+    let story: IStory
+    try {
+      story = await getStory(req.params.storyId)
+    } catch (e) {
+      e.message = '500'
+    }
+
+    if (!story) {
+      return next(new Error('404'))
+    }
+
+    let item: any = {
+      story: story,
+      positions: null,
+      expenses: null
+    }
+    try {
+      item.positions = await story.getPositions()
+      item.expenses = await story.getExpense()
+    } catch (e) {
+      e.status = 500
+      return next(e)
+    }
+
+    return res.json(new Reply(200, 'success', false, item))
+  })
+
   router.use(checkToken)
 
   /**
@@ -150,29 +182,6 @@ export const storyRouter = () => {
     }
 
     return res.json(new Reply(200, 'success', false, payload))
-  })
-
-  router.get('/get/:storyId', async (req: Request, res: Response, next: NextFunction) => {
-    if (res.locals.error) {
-      return next(new Error(`${res.locals.error}`))
-    }
-
-    if (!req.params.storyId) {
-      return next(new Error('400'))
-    }
-
-    let story: IStory
-    try {
-      story = await getStory(req.params.storyId)
-    } catch (e) {
-      e.message = '500'
-    }
-
-    if (!story) {
-      return next(new Error('404'))
-    }
-
-    return res.json(new Reply(200, 'success', false, story))
   })
 
   /**
