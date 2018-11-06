@@ -61,6 +61,10 @@ export const storyRouter = () => {
       e.message = '500'
     }
 
+    if (!story.isPublished) {
+      return next(new Error('404'))
+    }
+
     if (!story) {
       return next(new Error('404'))
     }
