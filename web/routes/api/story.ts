@@ -233,6 +233,9 @@ export const storyRouter = () => {
     }
 
     const story: IStory = res.locals.story
+
+    console.log(story)
+
     const expenseData = {
       procedure: req.body.procedure || 0,
       travel: req.body.travel || 0,
@@ -243,6 +246,9 @@ export const storyRouter = () => {
       paidDaysMissed: req.body.paidDaysMissed || 0,
       currency: req.body.currency || '€'
     }
+
+    console.log(expenseData)
+    
 
     let expense: IExpense
     try {

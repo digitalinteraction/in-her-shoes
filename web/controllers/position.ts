@@ -1,6 +1,7 @@
 import Axios, { AxiosResponse } from "axios"
 import { IPosition } from './../schemas/position'
 import models from './../models'
+import {mongo} from 'mongoose'
 /**
  * Get lat and longs for start and end city
  * @param  start Start city
@@ -12,8 +13,15 @@ export async function getStartAndEndPositions(start: string, end: string): Promi
     throw new Error('city names cannot be empty')
   }
 
-  const positionStart = await getGeocodeFromCity(start)
-  const positionEnd = await getGeocodeFromCity(end)
+  let positionStart: IPosition
+  let positionEnd: IPosition
+
+  try {
+    positionStart = await getGeocodeFromCity(start)
+    positionEnd = await getGeocodeFromCity(end)
+  } catch (e) {
+    console.error(e)
+  }
 
   return [
     positionStart,
@@ -73,12 +81,24 @@ export async function createPosition(positionData: {
   gid: string,
   textAddress: string
 }): Promise<IPosition> {
-  return await models.Position.create({
-    lat: positionData.lat,
-    lng: positionData.lng,
-    gid: positionData.gid,
-    textAddress: positionData.textAddress
-  })
+  let position: IPosition
+  try {
+    position = await models.Position.create({
+      lat: positionData.lat,
+      lng: positionData.lng,
+      gid: positionData.gid,
+      textAddress: positionData.textAddress
+    })
+  } catch (e) {
+    /**
+     * If there is a mongo duplicate key, return the position with matching latitude
+     * @param  {lat [description]
+     * @return      [description]
+     */
+    return await models.Position.findOne({lat: positionData.lat})
+  }
+
+  return position
 }
 
 /**
