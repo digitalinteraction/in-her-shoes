@@ -1,7 +1,7 @@
 import Axios, { AxiosResponse } from "axios"
 import { IPosition } from './../schemas/position'
 import models from './../models'
-import {mongo} from 'mongoose'
+
 /**
  * Get lat and longs for start and end city
  * @param  start Start city

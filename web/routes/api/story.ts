@@ -7,7 +7,7 @@ import {IUser} from "../../schemas/user";
 import {getUserId} from "../../controllers/user";
 import {Schema} from "mongoose";
 import {IExpense} from "../../schemas/expense";
-import {storeExpense} from "../../controllers/expense";
+import {storeExpense, editExpense} from "../../controllers/expense";
 import {isStoryOwner} from "../../middleware/owner";
 import { IPosition } from '../../schemas/position'
 
@@ -231,10 +231,7 @@ export const storyRouter = () => {
     if (res.locals.error) {
       return next(new Error(`${res.locals.error}`))
     }
-
     const story: IStory = res.locals.story
-
-    console.log(story)
 
     const expenseData = {
       procedure: req.body.procedure || 0,
@@ -246,9 +243,6 @@ export const storyRouter = () => {
       paidDaysMissed: req.body.paidDaysMissed || 0,
       currency: req.body.currency || '€'
     }
-
-    console.log(expenseData)
-    
 
     let expense: IExpense
     try {
@@ -270,6 +264,41 @@ export const storyRouter = () => {
     response.expenses = expense || null
 
     return res.json(new Reply(200, 'success', false, response))
+  })
+
+  /**
+   * Edit a stored expense
+   * @param  '/expense/edit' [description]
+   * @param  async(req       [description]
+   * @return                 [description]
+   */
+  router.post('/expense/edit', async (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals.error) {
+      return next(new Error(`${res.locals.error}`))
+    }
+    const story: IStory = res.locals.story
+
+    const expenseData = {
+      procedure: req.body.procedure || 0,
+      travel: req.body.travel || 0,
+      food: req.body.food || 0,
+      childcare: req.body.childcare || 0,
+      accommodation: req.body.accommodation,
+      other: req.body.other || 0,
+      paidDaysMissed: req.body.paidDaysMissed || 0,
+      currency: req.body.currency || '€'
+    }
+
+    let expense: IExpense
+    try {
+      expense = await story.getExpense()
+      expense = await editExpense(expense._id, expenseData)
+    } catch (e) {
+      e.message = '500'
+      return next(e)
+    }
+
+    return res.json(new Reply(200, 'success', false, expense))
   })
 
   /**
